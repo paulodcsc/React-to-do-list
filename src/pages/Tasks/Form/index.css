@@ -1,0 +1,16 @@
+.task-header {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.submit {
+    margin-top: 20px;
+}
+
+.lower {
+    margin-top: 15px;
+}
