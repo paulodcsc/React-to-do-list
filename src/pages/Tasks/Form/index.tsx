@@ -19,8 +19,12 @@ interface ITask {
 
 const Tasks: React.FC = () => {
 const {id} = useParams<IParamsProps>()
+
+const [buttonName, setButtonName] = useState("Create")
+const [alertName, setAlertName] = useState("Created!")
+
   
-  const navigate = useNavigate()
+const navigate = useNavigate()
   
   const [model, setModel] = useState<ITask>({
     title:'',
@@ -28,11 +32,12 @@ const {id} = useParams<IParamsProps>()
     createdAt: new Date,
     deadline: new Date,
     complexity: ''
-
   })
   
     useEffect(() => {
       if (id !== undefined) {
+        setButtonName("Update")
+        setAlertName("Updated!")
         findTask(id)
       }
     }, [id])
@@ -49,7 +54,7 @@ const {id} = useParams<IParamsProps>()
   }
 
   function created() {
-    alert("Created!");
+    alert(alertName);
  }
 
   function updatedModel (e: ChangeEvent<HTMLInputElement>) {
@@ -79,9 +84,8 @@ const {id} = useParams<IParamsProps>()
 
   function goBack () {
     navigate('/tasks')
+  }
 
-
-}
   return(
     <div className='container'>
       <br/>
@@ -96,6 +100,7 @@ const {id} = useParams<IParamsProps>()
                     <Form.Label>Title</Form.Label>
                     <Form.Control 
                     type="text" 
+                    maxLength={30}
                     placeholder="Ex: Go to the mall" 
                     name="title" 
                     value={model.title}
@@ -107,6 +112,7 @@ const {id} = useParams<IParamsProps>()
                     <Form.Control 
                     as="textarea"
                     rows={8} 
+                    maxLength={1456}
                     placeholder="Ex: Buy some ice cream and tickets for the Spider-Man movie on wednesday" 
                     name="description"
                     value={model.description}
@@ -133,11 +139,11 @@ const {id} = useParams<IParamsProps>()
                     type="date" 
                     placeholder="Ex: Buy some ice cream and tickets for the Spider-Man movie on wednesday" 
                     name="deadline"
-                    value={model.deadline}
+                    value={model.deadline.toString()}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => updatedModel(e)} />
                 </Form.Group>
                 <Button className='submit' variant="success" type="submit" onClick={created}>
-                    Create
+                    {buttonName}
                 </Button>
         </Form>
       </div>

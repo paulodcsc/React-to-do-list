@@ -21,28 +21,52 @@ const Tasks: React.FC = () => {
   const [tasks, setTasks] = useState<ITask[]>([])
   const navigate = useNavigate()
   
+  async function loadTasks() {
+    const response = await api.get ('/Item')
+    console.log(response)
+    setTasks(response.data) 
+  }
+
   useEffect(() => {
     loadTasks()
   }, [])
   
-  async function loadTasks() {
-  
-    const response = await api.get ('/Item')
-    console.log(response)
-    setTasks(response.data)
-  
+  async function finishedTask(id: number) {
+    const finished = {finished:true}
+    await api.put(`/Item/${id}`, finished)
+    loadTasks()
+  }
+
+  function formateDescription(description: String) {
+    let descriptionLenght
+    
+    if (description.length > 20) {
+      descriptionLenght = description.substring(0,20) + "..."
+    } else {
+      descriptionLenght = description.substring(0,20)
+    }
+    return descriptionLenght
+  }
+
+  async function deleteTask(id: number) {
+    await api.delete(`/Item/${id}`)
+    loadTasks()
   }
 
   function formateDate(date: Date) {
     return moment(date).format('DD/MM/YYYY')
   }
 
-  function newTask () {
+  function newTask() {
     navigate('/tasks_form')
   }
 
   function editTask(id: number) {
     navigate(`/tasks_form/${id}`)
+  }
+
+  function viewTask(id: number) {
+    navigate(`/tasks/${id}`)
   }
   
   return(
@@ -56,8 +80,7 @@ const Tasks: React.FC = () => {
       <Table striped bordered hover className='text-center'>
         <thead>
           <tr>
-            <th>#</th>
-            <th>Title</th>
+            <th>Task</th>
             <th>Description</th>
             <th>Created at</th>
             <th>Deadline</th>
@@ -71,22 +94,21 @@ const Tasks: React.FC = () => {
         {
             tasks.map(task => (
             <tr key={task.id}>
-              <td>{task.id}</td>
               <td>{task.title}</td>
-              <td>{task.description}</td>
+              <td>{formateDescription(task.description)}</td>
               <td>{formateDate(task.createdAt)}</td>
               <td>{formateDate(task.deadline)}</td>
               <td>{task.complexity}</td>
               <td>
                 <Badge bg={task.finished ? "success" : "warning"} text={task.finished ? "light" : "dark"}>
-                    {task.finished ? "FINALIZADO" : "PENDENTE"}
+                    {task.finished ? "FINISHED" : "PENDING"}
                 </Badge>{' '}
               </td>
               <td>
-                <Button size='sm' variant='warning' onClick={() => editTask(task.id)}>Editar</Button>{' '}
-                <Button size='sm' variant='info'>Visualizar</Button>{' '}
-                <Button size='sm' variant='success'>Finalizar</Button>{' '}
-                <Button size='sm' variant='danger'>Deletar</Button>{' '}
+                <Button size='sm' variant='warning' disabled={task.finished} onClick={() => editTask(task.id)}>Edit</Button>{' '}
+                <Button size='sm' variant='info' onClick={() => viewTask(task.id)}>See more</Button>{' '}
+                <Button size='sm' variant='success' disabled={task.finished} onClick={() => finishedTask(task.id)}>Finish</Button>{' '}
+                <Button size='sm' variant='danger' onClick={() => deleteTask(task.id)} >Delete</Button>{' '}
               </td>
             </tr>
             ))
