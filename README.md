@@ -2,7 +2,7 @@
 
 # To-do list using React and Typescript
 
-This repository contains the frontend and backend of a chat application built using ChatEngine.
+This repository contains a front-end "to-do list" app create with React.JS, Typescript, Bootstrap and Axios.
 
 ## Installation
 
