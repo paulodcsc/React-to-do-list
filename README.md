@@ -21,7 +21,7 @@ This repository contains a front-end "to-do list" app create with React.JS, Type
     
     `npm start`
     
-2.  Open your browser and navigate to the port specified by *Vite* to see the chat application. Instead of creating a *env* file, I left a *limited key* on it to make it easier.
+2.  Open your browser and navigate to the port specified on the console.
     
 
 ## Technology Stack
