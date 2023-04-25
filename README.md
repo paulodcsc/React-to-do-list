@@ -1,6 +1,6 @@
 
 
-# Chat Application using ChatEngine
+# To-do list using React and Typescript
 
 This repository contains the frontend and backend of a chat application built using ChatEngine.
 
